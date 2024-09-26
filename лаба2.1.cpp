@@ -21,7 +21,6 @@ int main()
     FILE* file;
     int i;
     int winans = 0;
-    char alf[67];
     char* anspeople = (char*)malloc((word1.number + 1) * sizeof(char)); // +1 для символа '\0'
     if (!anspeople) {
         printf("Ошибка выделения памяти\n");
@@ -37,7 +36,7 @@ int main()
         int count = 0;
         printf("Слово из %d букв, ввведите букву - ", word1.number);
         scanf(" %c", &ans.answer);
-        check(ans.answer, word1.word, &ans.wronganswer, &ans.rightanswer, let.alphabet, alf, anspeople, &att.tries);
+        check(ans.answer, word1.word, &ans.wronganswer, &ans.rightanswer, let.alphabet, anspeople, &att.tries);
         for (i = 0; i < strlen(anspeople); i++)
         {
             if (anspeople[i] != '_')

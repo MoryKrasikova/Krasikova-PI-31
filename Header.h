@@ -42,7 +42,7 @@ struct attempts
     int tries;
 };
 //функция для проверки буквы от пользователя в загаданном слове
-void check(char ans, char word[50], int* wa, int* ra, char* al, char* alf, char* anspeople, int* tries)
+void check(char ans, char word[50], int* wa, int* ra, char* al, char* anspeople, int* tries)
 {
     int i;
     int kol = 0;
@@ -101,10 +101,10 @@ void randomword(FILE* file, char word[50], int* number)
     }
 }
 //функция для записи результата в случае выигрыша
-void endwin(int* win, int* winres, int count)
+void endwin(int* win, int* winres, int winans)
 {
     *win += 1;
-    *winres = count;
+    *winres = winans;
 }
 //функция для счетчика проигрышей
 void lossend(int* loss)
