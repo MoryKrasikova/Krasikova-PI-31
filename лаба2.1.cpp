@@ -28,7 +28,7 @@ int main()
     }
     file = fopen("words.txt", "r");
     if (file == NULL) { printf("Ошибка"); return 1; }
-    randomword(file, word1.word, &word1.number);
+    randomword(file, word1.word, &word1.number);//выбор слова от компьютера
     memset(anspeople, '_', sizeof(anspeople)); // Заполняем anspeople символами '_'
     anspeople[word1.number] = '\0';
     while (ans.rightanswer < word1.number && ans.wronganswer < 6)
@@ -44,14 +44,14 @@ int main()
                 count += 1;
             }
         }
-        if (count == word1.number)
+        if (count == word1.number)//при выигрыше, когда в слове не останется не отгаданных букв
         {
             winans = ans.rightanswer + ans.wronganswer;
             printf("Вы отгадали слово - %s за %d попыток\n", word1.word, winans);
             endwin(&res.win, &res.winresult, winans);
             break;
         }
-        if (ans.wronganswer == 6)
+        if (ans.wronganswer == 6)//при проигыше, когда закончатся 6 попыток
         {
             printf("Вы проиграли! Слово - %s\n", word1.word);
             lossend(&res.loss);

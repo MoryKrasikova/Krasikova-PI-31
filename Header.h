@@ -52,7 +52,7 @@ void check(char ans, char word[50], int* wa, int* ra, char* al, char* anspeople,
         if (ans == word[i])
         {
             kol += 1;
-            anspeople[i] = ans;
+            anspeople[i] = ans;//открываем расположение правильной букву
         }
     }
     for (i = 0; i < strlen(al); i++)
@@ -60,15 +60,15 @@ void check(char ans, char word[50], int* wa, int* ra, char* al, char* anspeople,
         if (ans == al[i])
         {
             kol1 += 1;
-            al[i] = '.';
+            al[i] = '.';//убираем использованную букву
         }
     }
-    if (kol > 0 && kol1 > 0)
+    if (kol > 0 && kol1 > 0)//при верном ответе
     {
         *ra += 1;
         printf("Вы угадали букву - %s\n", anspeople);
     }
-    else
+    else//при неверном
     {
         *wa += 1;
         printf("вы не угадали букву или уже использовали ее - %s\n", anspeople);
@@ -103,8 +103,8 @@ void randomword(FILE* file, char word[50], int* number)
 //функция для записи результата в случае выигрыша
 void endwin(int* win, int* winres, int winans)
 {
-    *win += 1;
-    *winres = winans;
+    *win += 1;//кол-во выигрышей
+    *winres = winans;//кол-во ходов
 }
 //функция для счетчика проигрышей
 void lossend(int* loss)
