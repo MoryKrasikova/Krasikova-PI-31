@@ -9,8 +9,8 @@
 //структура для слова от компьютера
 struct word
 {
-    char word[50];
-    int number = 0;
+    char word[50];//массив со словом
+    int number = 0;//кол-во букв 
 };
 //структура для рисунка
 struct pictures
@@ -20,16 +20,16 @@ struct pictures
 //структура для ответа от пользователя
 struct answers
 {
-    char answer;
-    int wronganswer = 0;
-    int rightanswer = 0;
+    char answer;//буква от пользователя
+    int wronganswer = 0;//кол-во неерных ответов
+    int rightanswer = 0;//кол-во верных
 };
 //структура для результата игры
 struct result
 {
-    int win;
-    int loss;
-    int winresult;
+    int win;//кол-во выигрышей
+    int loss;//кол-во проигрышей
+    int winresult;//баллы при выигрыше
 };
 //структура для алфавита, проверки
 struct letters
@@ -39,7 +39,7 @@ struct letters
 //структура для счетчика результата
 struct attempts
 {
-    int tries;
+    int tries;//сколько у игрока осталось попыток(6-неверных ответов)
 };
 //функция для проверки буквы от пользователя в загаданном слове
 void check(char ans, char word[50], int* wa, int* ra, char* al, char* anspeople, int* tries)
