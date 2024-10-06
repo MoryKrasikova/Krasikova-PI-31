@@ -1,113 +1,173 @@
 ﻿//файл заголовков
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <Windows.h>
-#include <stdio.h>
-#include <time.h>
+#include <fstream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 #include <cstring>
-#include <stdlib.h>
-//структура для слова от компьютера
-struct word
-{
-    char word[50];//массив со словом
-    int number = 0;//кол-во букв 
+//класс для слова от компьютера
+class word {
+private:
+    char* randomWord; // Указатель для хранения случайного слова
+    int length; // Длина слова
+
+public:
+    // Конструктор
+    word() : randomWord(nullptr), length(0) {}
+
+    // Деструктор для освобождения памяти
+    ~word() {
+        delete[] randomWord;
+    }
+
+    // Метод для выбора случайного слова
+    void selectRandomWord(const std::string& filename) {
+        std::ifstream file(filename); // Открываем файл
+        if (!file.is_open()) {
+            std::cerr << "Ошибка открытия файла" << std::endl;
+            return;
+        }
+
+        std::vector<std::string> words; // Вектор для хранения слов
+        std::string word;
+
+        // Читаем все слова из файла
+        while (file >> word) {
+            words.push_back(word); // Добавляем каждый считанный токен в вектор
+        }
+
+        if (!words.empty()) {
+            srand(static_cast<unsigned int>(time(nullptr))); // Инициализация генератора случайных чисел
+            int randomIndex = rand() % words.size(); // Генерация случайного индекса
+
+            length = words[randomIndex].length(); // Узнаем длину случайного слова
+            randomWord = new char[length + 1]; // Выделяем память для массива (длина + 1 для '\0')
+
+            strncpy(randomWord, words[randomIndex].c_str(), length); // Копируем слово в массив символов
+            randomWord[length] = '\0'; // Обеспечиваем завершение строки нулем
+        }
+    }
+
+    // Метод для получения слова
+    const char* getRandomWord() const {
+        return randomWord;
+    }
+
+    // Метод для получения длины слова
+    int getLength() const {
+        return length;
+    }
 };
-//структура для рисунка
-struct pictures
+//класс для ответа от пользователя
+class answers
 {
-    int numpicture;
-};
-//структура для ответа от пользователя
-struct answers
-{
+protected:
+    int wronganswers;//кол-во неерных ответов
+    int rightanswers;//кол-во верных
+private:
     char answer;//буква от пользователя
-    int wronganswer = 0;//кол-во неерных ответов
-    int rightanswer = 0;//кол-во верных
+    int tries; // Количество попыток
+    const char* currentWord; // Текущее слово
+public:
+    // Конструктор
+    answers() : answer(), wronganswers(0), rightanswers(0), tries(6), currentWord(nullptr) {}
+
+    // Деструктор для освобождения памяти
+    ~answers() {
+    }
+    // Метод для установки слова
+    void setCurrentWord(const char* word) {
+        currentWord = word;
+    }
+    // Метод для установки буквы от пользователя
+    void setAnswer(char ans) {
+        if ((ans >= 'А' && ans <= 'я')) {
+            answer = tolower(ans); // Приводим к нижнему регистру
+        }
+    }
+    void check(int wordLength, char* usedLetters, char* ansPeople) {
+        int kol = 0; // Количество совпадений
+        int kol1 = 0; // Количество использованных букв
+
+        for (int i = 0; i < wordLength; i++) {
+            if (answer == currentWord[i]) { // Сравнение без учета регистра
+                kol += 1;
+                ansPeople[i] = currentWord[i]; // Открываем букву в ansPeople
+            }
+        }
+        for (int i = 0; i < strlen(usedLetters); i++) {
+            if (answer == usedLetters[i]) { // Сравнение без учета регистра
+                kol1 += 1;
+                usedLetters[i] = '.'; // Убираем использованную букву
+            }
+        }
+        // Проверка на правильный или неверный ответ
+        if (kol > 0 && kol1 > 0) { // Верный ответ
+            rightanswers += 1;
+            std::cout << "Вы угадали букву: " << ansPeople << std::endl;
+        }
+        else { // Неверный ответ
+            wronganswers += 1;
+            std::cout << "Вы не угадали букву или уже использовали её: " << ansPeople << std::endl;
+            tries = 6 - wronganswers; // Обновление количества оставшихся попыток
+            std::cout << "У вас осталось " << tries << " попыток." << std::endl;
+        }
+    }
+    int getRightAnswers() const {
+        return rightanswers;
+    }
+
+    // Метод для получения количества неверных ответов
+    int getWrongAnswers() const {
+        return wronganswers;
+    }
 };
 //структура для результата игры
-struct result
+class gameresult: public answers
 {
+private:
     int win;//кол-во выигрышей
     int loss;//кол-во проигрышей
     int winresult;//баллы при выигрыше
+public:
+    // Конструктор
+    gameresult() : win(0), loss(6), winresult(0){
+
+    }
+
+    // Деструктор для освобождения памяти
+    ~gameresult() {
+    }
+    int getRightAnswers() const {
+        return rightanswers; // Доступ к переменной из базового класса
+    }
+
+    // Получение количества неверных ответов
+    int getWrongAnswers() const {
+        return wronganswers; // Доступ к переменной из базового класса
+    }
+    void kolwin()
+    {
+        win += 1;
+    }
+    int getWin() const
+    {
+        return win;
+    }
+
+    void kolloss()
+    {
+        loss += 1;
+    }
+    int getLoss() const {
+        return loss;
+    }
+
+    void winres(){
+        winresult = rightanswers + wronganswers;
+    }
+    int getWinResult() const {
+        return winresult;
+     }
 };
-//структура для алфавита, проверки
-struct letters
-{
-    char alphabet[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-};
-//структура для счетчика результата
-struct attempts
-{
-    int tries;//сколько у игрока осталось попыток(6-неверных ответов)
-};
-//функция для проверки буквы от пользователя в загаданном слове
-void check(char ans, char word[50], int* wa, int* ra, char* al, char* anspeople, int* tries)
-{
-    int i;
-    int kol = 0;
-    int kol1 = 0;
-    for (i = 0; i < strlen(word); i++)
-    {
-        if (ans == word[i])
-        {
-            kol += 1;
-            anspeople[i] = ans;//открываем расположение правильной букву
-        }
-    }
-    for (i = 0; i < strlen(al); i++)
-    {
-        if (ans == al[i])
-        {
-            kol1 += 1;
-            al[i] = '.';//убираем использованную букву
-        }
-    }
-    if (kol > 0 && kol1 > 0)//при верном ответе
-    {
-        *ra += 1;
-        printf("Вы угадали букву - %s\n", anspeople);
-    }
-    else//при неверном
-    {
-        *wa += 1;
-        printf("вы не угадали букву или уже использовали ее - %s\n", anspeople);
-        *tries = 6 - *wa;
-        printf("У вас осталось %d попыток.\n", *tries);
-    }
-}
-//функция для рандомного выбора слова из файла
-void randomword(FILE* file, char word[50], int* number)
-{
-    char word1[50][50];
-    int c = 0;
-    char line[256];
-    while (fgets(line, sizeof(line), file) != NULL) {
-        char* token = strtok(line, " \n"); // Разделяем по пробелу и новой строке
-        while (token != NULL) {
-            if (c < 50) { // Проверяем, чтобы не выйти за пределы массива
-                strcpy(word1[c], token);
-                c++;
-            }
-            token = strtok(NULL, " \n");
-        }
-    }
-    if (c > 0)
-    {
-        srand(time(NULL));
-        int randomindex = rand() % c;
-        strcpy(word, word1[randomindex]);
-        *number = strlen(word);
-    }
-}
-//функция для записи результата в случае выигрыша
-void endwin(int* win, int* winres, int winans)
-{
-    *win += 1;//кол-во выигрышей
-    *winres = winans;//кол-во ходов
-}
-//функция для счетчика проигрышей
-void lossend(int* loss)
-{
-    *loss += 1;
-}

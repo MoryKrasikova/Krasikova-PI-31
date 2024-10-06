@@ -1,64 +1,69 @@
 ﻿// лаба2.1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 #define _CRT_SECURE_NO_WARNINGS
 #include "Header.h"
-#include <iostream>
 #include <Windows.h>
-#include <stdio.h>
-#include <time.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 #include <cstring>
-#include <stdlib.h>
 int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Rus");
-    struct word word1;
-    struct pictures pic;
-    struct answers ans;
-    struct result res;
-    struct letters let;
-    struct attempts att;
-    FILE* file;
+    const std::string filename = "words.txt"; // Имя файла
+    char userInput;
     int i;
-    int winans = 0;
-    char* anspeople = (char*)malloc((word1.number + 1) * sizeof(char)); // +1 для символа '\0'
-    if (!anspeople) {
-        printf("Ошибка выделения памяти\n");
-        return 1;
-    }
-    file = fopen("words.txt", "r");
-    if (file == NULL) { printf("Ошибка"); return 1; }
-    randomword(file, word1.word, &word1.number);//выбор слова от компьютера
-    memset(anspeople, '_', sizeof(anspeople)); // Заполняем anspeople символами '_'
-    anspeople[word1.number] = '\0';
-    while (ans.rightanswer < word1.number && ans.wronganswer < 6)
+    int wr = 0;
+    char* ansPeople(nullptr);
+    word w; // Создаем экземпляр класса
+    gameresult gr;
+    answers answer;
+
+    w.selectRandomWord(filename); // Выбираем случайное слово
+    const char* word = w.getRandomWord(); // Получаем слово
+    int length = w.getLength(); // Получаем длину слова
+    answer.setCurrentWord(word); // Передача случайного слова
+
+    // Массив для использованных букв и массив для открытых букв
+    char usedLetters[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    ansPeople = new char[length + 1]; // +1 для '\0'
+    std::fill(ansPeople, ansPeople + length, '_'); // Заполняем символами '_'
+    ansPeople[length] = '\0'; // Завершаем строку нулем
+
+
+    while (answer.getRightAnswers() < length && answer.getWrongAnswers() < 6)
     {
         int count = 0;
-        printf("Слово из %d букв, ввведите букву - ", word1.number);
-        scanf(" %c", &ans.answer);
-        check(ans.answer, word1.word, &ans.wronganswer, &ans.rightanswer, let.alphabet, anspeople, &att.tries);
-        for (i = 0; i < strlen(anspeople); i++)
+        std::cout << "Слово из " << length << " букв, введите букву - ";
+        std::cin >> userInput;
+        answer.setAnswer(userInput); // Установка буквы пользователя
+        // Проверка введенной буквы
+        answer.check(length, usedLetters, ansPeople);
+        for (i = 0; i < length; i++)
         {
-            if (anspeople[i] != '_')
+            if (ansPeople[i] != '_')
             {
                 count += 1;
             }
         }
-        if (count == word1.number)//при выигрыше, когда в слове не останется не отгаданных букв
+        if (count == length)//при выигрыше, когда в слове не останется не отгаданных букв
         {
-            winans = ans.rightanswer + ans.wronganswer;
-            printf("Вы отгадали слово - %s за %d попыток\n", word1.word, winans);
-            endwin(&res.win, &res.winresult, winans);
+            wr = gr.getWinResult();
+            std::cout << "Вы отгадали слово - " << word << " за " << wr << " попыток." << std::endl;
+            gr.kolwin();
             break;
         }
-        if (ans.wronganswer == 6)//при проигыше, когда закончатся 6 попыток
+        if (answer.getWrongAnswers() == 6)//при проигыше, когда закончатся 6 попыток
         {
-            printf("Вы проиграли! Слово - %s\n", word1.word);
-            lossend(&res.loss);
+            std::cout << "Вы проиграли! Слово - " << word << std::endl;
+            gr.kolloss();
             break;
         }
     }
-    fclose(file);
+    delete[] ansPeople;
 }
 
 
