@@ -126,10 +126,6 @@ public:
 //структура для результата игры
 class gameresult: public answers
 {
-private:
-    int win;//кол-во выигрышей
-    int loss;//кол-во проигрышей
-    int winresult;//баллы при выигрыше
 public:
     // Конструктор
     gameresult() : win(0), loss(6), winresult(0){
@@ -149,7 +145,7 @@ public:
     }
     void kolwin()
     {
-        win += 1;
+       this-> win = win + 1;
     }
     int getWin() const
     {
@@ -158,16 +154,20 @@ public:
 
     void kolloss()
     {
-        loss += 1;
+        this -> loss = loss + 1;
     }
     int getLoss() const {
         return loss;
     }
 
     void winres(){
-        winresult = rightanswers + wronganswers;
+       this -> winresult = rightanswers + wronganswers;
     }
     int getWinResult() const {
         return winresult;
      }
+private:
+    int win;//кол-во выигрышей
+    int loss;//кол-во проигрышей
+    int winresult;//баллы при выигрыше
 };
