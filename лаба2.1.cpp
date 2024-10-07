@@ -33,7 +33,6 @@ int main()
     std::fill(ansPeople, ansPeople + length, '_'); // Заполняем символами '_'
     ansPeople[length] = '\0'; // Завершаем строку нулем
 
-
     while (answer.getRightAnswers() < length && answer.getWrongAnswers() < 6)
     {
         int count = 0;
@@ -53,12 +52,14 @@ int main()
         {
             wr = gr.getWinResult();
             std::cout << "Вы отгадали слово - " << word << " за " << wr << " попыток." << std::endl;
+            answer.displayLetters();
             gr.kolwin();
             break;
         }
         if (answer.getWrongAnswers() == 6)//при проигыше, когда закончатся 6 попыток
         {
             std::cout << "Вы проиграли! Слово - " << word << std::endl;
+            answer.displayLetters();
             gr.kolloss();
             break;
         }

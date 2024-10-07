@@ -10,7 +10,7 @@
   <Class Name="answers">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAQAAAgAIEAAAQAAAAAAAAQBAAAEAAAAAAAAQAII=</HashCode>
+      <HashCode>AACAAUAAAoAIEAAAwAIAAAAAAQBAAAEAAAAAAAAQAIo=</HashCode>
       <FileName>Header.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -18,8 +18,8 @@
     <Position X="3" Y="0.75" Width="1.5" />
     <InheritanceLine Type="answers" FixedFromPoint="true">
       <Path>
-        <Point X="2" Y="2.375" />
-        <Point X="3" Y="2.375" />
+        <Point X="2" Y="2.893" />
+        <Point X="3" Y="2.893" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>

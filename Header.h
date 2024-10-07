@@ -59,6 +59,20 @@ public:
         return length;
     }
 };
+//класс для запонимания букв
+class Letter {
+private:
+    char let;
+
+public:
+    // Конструктор
+    Letter(char letter) : let(letter) {}
+
+    // Метод для получения буквы
+    char getValue() const {
+        return let;
+    }
+};
 //класс для ответа от пользователя
 class answers
 {
@@ -69,12 +83,21 @@ private:
     char answer;//буква от пользователя
     int tries; // Количество попыток
     const char* currentWord; // Текущее слово
+    Letter** letters;
+    int letterCount; // Количество введённых букв
+    int capacity; // Вместимость массива
 public:
     // Конструктор
-    answers() : answer(), wronganswers(0), rightanswers(0), tries(6), currentWord(nullptr) {}
+    answers() : answer(), wronganswers(0), rightanswers(0), tries(6), currentWord(nullptr), letterCount(0), capacity(22) {
+        letters = new Letter * [capacity]; // Выделяем память для массива указателей
+    }
 
     // Деструктор для освобождения памяти
     ~answers() {
+        for (int i = 0; i < letterCount; ++i) {
+            delete letters[i]; // Освобождаем память для каждого объекта Letter
+        }
+        delete[] letters; // Освобождаем массив указателей
     }
     // Метод для установки слова
     void setCurrentWord(const char* word) {
@@ -84,7 +107,12 @@ public:
     void setAnswer(char ans) {
         if ((ans >= 'А' && ans <= 'я')) {
             answer = tolower(ans); // Приводим к нижнему регистру
+            addLetter(answer); // Записываем букву в массив
         }
+    }
+    void addLetter(char letter)
+    {
+        letters[letterCount++] = new Letter(letter); // Создаем новый объект и добавляем в массив
     }
     void check(int wordLength, char* usedLetters, char* ansPeople) {
         int kol = 0; // Количество совпадений
@@ -122,8 +150,15 @@ public:
     int getWrongAnswers() const {
         return wronganswers;
     }
+    void displayLetters() const {
+        std::cout << "Введенные буквы: ";
+        for (int i = 0; i < letterCount; ++i) {
+            std::cout << letters[i]->getValue() << " "; // Получаем значения букв
+        }
+        std::cout << std::endl;
+    }
 };
-//структура для результата игры
+//класс для результата игры
 class gameresult: public answers
 {
 public:
