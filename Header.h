@@ -80,7 +80,6 @@ protected:
     int wronganswers;//кол-во неерных ответов
     int rightanswers;//кол-во верных
 private:
-    char answer;//буква от пользователя
     int tries; // Количество попыток
     const char* currentWord; // Текущее слово
     Letter** letters;
@@ -88,7 +87,7 @@ private:
     int capacity; // Вместимость массива
 public:
     // Конструктор
-    answers() : answer(), wronganswers(0), rightanswers(0), tries(6), currentWord(nullptr), letterCount(0), capacity(22) {
+    answers() : wronganswers(0), rightanswers(0), tries(6), currentWord(nullptr), letterCount(0), capacity(22) {
         letters = new Letter * [capacity]; // Выделяем память для массива указателей
     }
 
@@ -103,18 +102,14 @@ public:
     void setCurrentWord(const char* word) {
         currentWord = word;
     }
-    // Метод для установки буквы от пользователя
     void setAnswer(char ans) {
-        if ((ans >= 'А' && ans <= 'я')) {
-            answer = tolower(ans); // Приводим к нижнему регистру
-            addLetter(answer); // Записываем букву в массив
-        }
+        addLetter(ans); // Записываем букву в массив
     }
     void addLetter(char letter)
     {
         letters[letterCount++] = new Letter(letter); // Создаем новый объект и добавляем в массив
     }
-    void check(int wordLength, char* usedLetters, char* ansPeople) {
+    void check(char answer, int wordLength, char* usedLetters, char* ansPeople) {
         int kol = 0; // Количество совпадений
         int kol1 = 0; // Количество использованных букв
 

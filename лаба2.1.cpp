@@ -8,19 +8,47 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstring>
+#include <string> 
 int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Rus");
-    const std::string filename = "words.txt"; // Имя файла
+    std::string filename; // Имя файла
     char userInput;
     int i;
     int wr = 0;
     char* ansPeople(nullptr);
+    std::string input;
+    int namberfile=0;
     word w; // Создаем экземпляр класса
     gameresult gr;
     answers answer;
+    std::cout << "Выберите категорию слов:" << std::endl;
+    std::cout << "1 - животные" << std::endl;
+    std::cout << "2 - страны" << std::endl;
+    std::cout << "3 - общая тема" << std::endl;
+    std::cout << "4 - растения" << std::endl;
+    do
+    {
+        std::cin >> input;
+        if (isdigit(input[0]))
+        {
+            namberfile = std::stoi(input);
+            if (namberfile < 1 || namberfile>4)
+                std::cout << "Неверный ввод" << std::endl;
+        }
+        else
+        {
+            std::cout << "Неверный ввод" << ::std::endl;
+            namberfile = 0;
+        }
+    } while (namberfile < 1 || namberfile>4 );
+
+    if (namberfile == 1) filename = "animals.txt";
+    else if (namberfile == 2) filename = "countries.txt";
+    else if (namberfile == 3) filename = "words.txt";
+    else if (namberfile == 4) filename = "plants.txt";
 
     w.selectRandomWord(filename); // Выбираем случайное слово
     const char* word = w.getRandomWord(); // Получаем слово
@@ -28,7 +56,7 @@ int main()
     answer.setCurrentWord(word); // Передача случайного слова
 
     // Массив для использованных букв и массив для открытых букв
-    char usedLetters[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    char usedLetters[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя-";
     ansPeople = new char[length + 1]; // +1 для '\0'
     std::fill(ansPeople, ansPeople + length, '_'); // Заполняем символами '_'
     ansPeople[length] = '\0'; // Завершаем строку нулем
@@ -38,9 +66,9 @@ int main()
         int count = 0;
         std::cout << "Слово из " << length << " букв, введите букву - ";
         std::cin >> userInput;
-        answer.setAnswer(userInput); // Установка буквы пользователя
+        answer.setAnswer(userInput);
         // Проверка введенной буквы
-        answer.check(length, usedLetters, ansPeople);
+        answer.check(userInput, length, usedLetters, ansPeople);
         for (i = 0; i < length; i++)
         {
             if (ansPeople[i] != '_')
