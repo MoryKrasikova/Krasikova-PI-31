@@ -137,12 +137,12 @@ public:
             std::cout << "У вас осталось " << tries << " попыток." << std::endl;
         }
     }
-    int getRightAnswers() const {
+    int getRightAnswers() {
         return rightanswers;
     }
 
     // Метод для получения количества неверных ответов
-    int getWrongAnswers() const {
+    int getWrongAnswers() {
         return wronganswers;
     }
     void displayLetters() const {
@@ -162,20 +162,12 @@ private:
     int winresult;//баллы при выигрыше
 public:
     // Конструктор
-    gameresult() : win(0), loss(6), winresult(0){
+    gameresult() : win(0), loss(0), winresult(0){
 
     }
 
     // Деструктор для освобождения памяти
     ~gameresult() {
-    }
-    int getRightAnswers() const {
-        return rightanswers; // Доступ к переменной из базового класса
-    }
-
-    // Получение количества неверных ответов
-    int getWrongAnswers() const {
-        return wronganswers; // Доступ к переменной из базового класса
     }
     void kolwin()
     {
@@ -194,10 +186,8 @@ public:
         return loss;
     }
 
-    void winres(){
-       winresult = rightanswers + wronganswers;
-    }
-    int getWinResult() const {
+    int getWinResult(int right, int wrong) {
+        winresult = right + wrong;
         return winresult;
-     }
+    }
 };
