@@ -53,7 +53,7 @@ int main()
     w.selectRandomWord(filename); // Выбираем случайное слово
     const char* word = w.getRandomWord(); // Получаем слово
     int length = w.getLength(); // Получаем длину слова
-    answer.setCurrentWord(word); // Передача случайного слова
+    gr.setCurrentWord(word); // Передача случайного слова
 
     // Массив для использованных букв и массив для открытых букв
     char usedLetters[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
@@ -61,14 +61,14 @@ int main()
     std::fill(ansPeople, ansPeople + length, '_'); // Заполняем символами '_'
     ansPeople[length] = '\0'; // Завершаем строку нулем
 
-    while (answer.getRightAnswers() < length && answer.getWrongAnswers() < 6)
+    while (gr.getRightAnswers() < length && gr.getWrongAnswers() < 6)
     {
         int count = 0;
         std::cout << "Слово из " << length << " букв, введите букву - ";
         std::cin >> userInput;
-        answer.setAnswer(userInput);
+        gr.setAnswer(userInput);
         // Проверка введенной буквы
-        answer.check(userInput, length, usedLetters, ansPeople);
+        gr.check(userInput, length, usedLetters, ansPeople);
         for (i = 0; i < length; i++)
         {
             if (ansPeople[i] != '_')
@@ -78,16 +78,16 @@ int main()
         }
         if (count == length)//при выигрыше, когда в слове не останется не отгаданных букв
         {
-            wr = gr.getWinResult(answer.getRightAnswers(), answer.getWrongAnswers());
+            wr = gr.getWinResult();
             std::cout << "Вы отгадали слово - " << word << " за " << wr << " попыток." << std::endl;
-            answer.displayLetters();
+            gr.displayLetters();
             gr.kolwin();
             break;
         }
-        if (answer.getWrongAnswers() == 6)//при проигыше, когда закончатся 6 попыток
+        if (gr.getWrongAnswers() == 6)//при проигыше, когда закончатся 6 попыток
         {
             std::cout << "Вы проиграли! Слово - " << word << std::endl;
-            answer.displayLetters();
+            gr.displayLetters();
             gr.kolloss();
             break;
         }

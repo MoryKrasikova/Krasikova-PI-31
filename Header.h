@@ -186,8 +186,8 @@ public:
         return loss;
     }
 
-    int getWinResult(int right, int wrong) {
-        winresult = right + wrong;
+    int getWinResult() {
+        winresult = rightanswers + wronganswers;
         return winresult;
     }
 };
