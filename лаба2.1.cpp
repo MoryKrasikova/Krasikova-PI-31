@@ -56,7 +56,7 @@ int main()
     answer.setCurrentWord(word); // Передача случайного слова
 
     // Массив для использованных букв и массив для открытых букв
-    char usedLetters[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя-";
+    char usedLetters[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
     ansPeople = new char[length + 1]; // +1 для '\0'
     std::fill(ansPeople, ansPeople + length, '_'); // Заполняем символами '_'
     ansPeople[length] = '\0'; // Завершаем строку нулем
