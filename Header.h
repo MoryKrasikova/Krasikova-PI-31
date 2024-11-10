@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstring>
+using namespace std;
 //класс для слова от компьютера
 class word {
 private:
@@ -22,15 +23,15 @@ public:
     }
 
     // Метод для выбора случайного слова
-    void selectRandomWord(const std::string& filename) {
-        std::ifstream file(filename); // Открываем файл
+    void selectRandomWord(const string& filename) {
+        ifstream file(filename); // Открываем файл
         if (!file.is_open()) {
-            std::cerr << "Ошибка открытия файла" << std::endl;
+            cerr << "Ошибка открытия файла" << endl;
             return;
         }
 
-        std::vector<std::string> words; // Вектор для хранения слов
-        std::string word;
+        vector<string> words; // Вектор для хранения слов
+        string word;
 
         // Читаем все слова из файла
         while (file >> word) {
@@ -81,13 +82,15 @@ protected:
     int rightanswers;//кол-во верных
 private:
     int tries; // Количество попыток
-    const char* currentWord; // Текущее слово
+    string currentWord; // Текущее слово
     Letter** letters;
     int letterCount; // Количество введённых букв
     int capacity; // Вместимость массива
+
+    friend void initializeGame(answers& game, const string& wordFilename);
 public:
     // Конструктор
-    answers() : wronganswers(0), rightanswers(0), tries(6), currentWord(nullptr), letterCount(0), capacity(22) {
+    answers() : wronganswers(0), rightanswers(0), tries(6), letterCount(0), capacity(22) {
         letters = new Letter * [capacity]; // Выделяем память для массива указателей
     }
 
@@ -99,12 +102,17 @@ public:
         delete[] letters; // Освобождаем массив указателей
     }
     // Метод для установки слова
-    void setCurrentWord(const char* word) {
+private:
+    void setCurrentWord(const string& word) {
         currentWord = word;
     }
+
+public:
     void setAnswer(char ans) {
         addLetter(ans); // Записываем букву в массив
     }
+    const string& getCurrentWord() const { return currentWord; }
+
     void addLetter(char letter)
     {
         letters[letterCount++] = new Letter(letter); // Создаем новый объект и добавляем в массив
@@ -128,13 +136,13 @@ public:
         // Проверка на правильный или неверный ответ
         if (kol > 0 && kol1 > 0) { // Верный ответ
             rightanswers += 1;
-            std::cout << "Вы угадали букву: " << ansPeople << std::endl;
+            cout << "Вы угадали букву: " << ansPeople << endl;
         }
         else { // Неверный ответ
             wronganswers += 1;
-            std::cout << "Вы не угадали букву или уже использовали её: " << ansPeople << std::endl;
+            cout << "Вы не угадали букву или уже использовали её: " << ansPeople << endl;
             tries = 6 - wronganswers; // Обновление количества оставшихся попыток
-            std::cout << "У вас осталось " << tries << " попыток." << std::endl;
+            cout << "У вас осталось " << tries << " попыток." << endl;
         }
     }
     int getRightAnswers() {
@@ -146,12 +154,18 @@ public:
         return wronganswers;
     }
     void displayLetters() const {
-        std::cout << "Введенные буквы: ";
+        cout << "Введенные буквы: ";
         for (int i = 0; i < letterCount; ++i) {
-            std::cout << letters[i]->getValue() << " "; // Получаем значения букв
+            cout << letters[i]->getValue() << " "; // Получаем значения букв
         }
-        std::cout << std::endl;
+        cout << endl;
     }
+};
+//дружественная функция
+void initializeGame(answers& game, const string& wordFilename) {
+    word selectedWord;
+    selectedWord.selectRandomWord(wordFilename);
+    game.setCurrentWord(selectedWord.getRandomWord()); // Доступ к private методу
 };
 //класс для результата игры
 class gameresult: public answers

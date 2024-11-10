@@ -9,63 +9,64 @@
 #include <ctime>
 #include <cstring>
 #include <string> 
+using namespace std;
 int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Rus");
-    std::string filename; // Имя файла
+    string filename; // Имя файла
     char userInput;
     int i;
     int wr = 0;
     char* ansPeople(nullptr);
-    std::string input;
+    string input;
     int namberfile=0;
     word w; // Создаем экземпляр класса
     gameresult gr;
     answers answer;
-    std::cout << "Выберите категорию слов:" << std::endl;
-    std::cout << "1 - животные" << std::endl;
-    std::cout << "2 - страны" << std::endl;
-    std::cout << "3 - общая тема" << std::endl;
-    std::cout << "4 - растения" << std::endl;
+    cout << "Выберите категорию слов:" << endl;
+    cout << "1 - животные" << endl;
+    cout << "2 - страны" << endl;
+    cout << "3 - общая тема" << endl;
+    cout << "4 - растения" << endl;
     do
     {
-        std::cin >> input;
+        cin >> input;
         if (isdigit(input[0]))
         {
-            namberfile = std::stoi(input);
+            namberfile = stoi(input);
             if (namberfile < 1 || namberfile>4)
-                std::cout << "Неверный ввод" << std::endl;
+                cout << "Неверный ввод" << endl;
         }
         else
         {
-            std::cout << "Неверный ввод" << ::std::endl;
+            cout << "Неверный ввод" << ::endl;
             namberfile = 0;
         }
-    } while (namberfile < 1 || namberfile>4 );
+    } while (namberfile < 1 || namberfile>4);
 
     if (namberfile == 1) filename = "animals.txt";
     else if (namberfile == 2) filename = "countries.txt";
     else if (namberfile == 3) filename = "words.txt";
     else if (namberfile == 4) filename = "plants.txt";
 
-    w.selectRandomWord(filename); // Выбираем случайное слово
-    const char* word = w.getRandomWord(); // Получаем слово
-    int length = w.getLength(); // Получаем длину слова
-    gr.setCurrentWord(word); // Передача случайного слова
+
+    initializeGame(gr, filename);
+    const string& word = gr.getCurrentWord();
+    int length = word.length();
 
     // Массив для использованных букв и массив для открытых букв
     char usedLetters[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
     ansPeople = new char[length + 1]; // +1 для '\0'
-    std::fill(ansPeople, ansPeople + length, '_'); // Заполняем символами '_'
+    fill(ansPeople, ansPeople + length, '_'); // Заполняем символами '_'
     ansPeople[length] = '\0'; // Завершаем строку нулем
 
     while (gr.getRightAnswers() < length && gr.getWrongAnswers() < 6)
     {
         int count = 0;
-        std::cout << "Слово из " << length << " букв, введите букву - ";
-        std::cin >> userInput;
+        cout << "Слово из " << length << " букв, введите букву - ";
+        cin >> userInput;
         gr.setAnswer(userInput);
         // Проверка введенной буквы
         gr.check(userInput, length, usedLetters, ansPeople);
@@ -79,14 +80,14 @@ int main()
         if (count == length)//при выигрыше, когда в слове не останется не отгаданных букв
         {
             gr.getWinResult(wr);
-            std::cout << "Вы отгадали слово - " << word << " за " << wr << " попыток." << std::endl;
+            cout << "Вы отгадали слово - " << word << " за " << wr << " попыток." << endl;
             gr.displayLetters();
             gr.kolwin();
             break;
         }
         if (gr.getWrongAnswers() == 6)//при проигыше, когда закончатся 6 попыток
         {
-            std::cout << "Вы проиграли! Слово - " << word << std::endl;
+            cout << "Вы проиграли! Слово - " << word << endl;
             gr.displayLetters();
             gr.kolloss();
             break;
