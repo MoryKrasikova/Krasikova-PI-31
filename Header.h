@@ -10,16 +10,15 @@ using namespace std;
 //класс для слова от компьютера
 class word {
 private:
-    char* randomWord; // Указатель для хранения случайного слова
+    string randomword; // Указатель для хранения случайного слова
     int length; // Длина слова
 
 public:
     // Конструктор
-    word() : randomWord(nullptr), length(0) {}
+    word() : length(0) {}
 
     // Деструктор для освобождения памяти
     ~word() {
-        delete[] randomWord;
     }
 
     // Метод для выбора случайного слова
@@ -40,19 +39,17 @@ public:
 
         if (!words.empty()) {
             srand(static_cast<unsigned int>(time(nullptr))); // Инициализация генератора случайных чисел
-            int randomIndex = rand() % words.size(); // Генерация случайного индекса
+            int randomindex = rand() % words.size(); // Генерация случайного индекса
 
-            length = words[randomIndex].length(); // Узнаем длину случайного слова
-            randomWord = new char[length + 1]; // Выделяем память для массива (длина + 1 для '\0')
+            length = words[randomindex].length(); // Узнаем длину случайного слова
 
-            strncpy(randomWord, words[randomIndex].c_str(), length); // Копируем слово в массив символов
-            randomWord[length] = '\0'; // Обеспечиваем завершение строки нулем
+            randomword = words[randomindex];
         }
     }
 
     // Метод для получения слова
-    const char* getRandomWord() const {
-        return randomWord;
+    const string& getRandomWord() const {
+        return randomword;
     }
 
     // Метод для получения длины слова
@@ -117,30 +114,30 @@ public:
     {
         letters[letterCount++] = new Letter(letter); // Создаем новый объект и добавляем в массив
     }
-    void check(char answer, int wordLength, char* usedLetters, char* ansPeople) {
+    void check(char answer, int wordlength, string& usedletters, string& anspeople) {
         int kol = 0; // Количество совпадений
         int kol1 = 0; // Количество использованных букв
 
-        for (int i = 0; i < wordLength; i++) {
+        for (int i = 0; i < wordlength; i++) {
             if (answer == currentWord[i]) { // Сравнение без учета регистра
                 kol += 1;
-                ansPeople[i] = currentWord[i]; // Открываем букву в ansPeople
+                anspeople[i] = currentWord[i]; // Открываем букву в ansPeople
             }
         }
-        for (int i = 0; i < strlen(usedLetters); i++) {
-            if (answer == usedLetters[i]) { // Сравнение без учета регистра
+        for (int i = 0; i < usedletters.length(); i++) {
+            if (answer == usedletters[i]) { // Сравнение без учета регистра
                 kol1 += 1;
-                usedLetters[i] = '.'; // Убираем использованную букву
+                usedletters[i] = '.'; // Убираем использованную букву
             }
         }
         // Проверка на правильный или неверный ответ
         if (kol > 0 && kol1 > 0) { // Верный ответ
             rightanswers += 1;
-            cout << "Вы угадали букву: " << ansPeople << endl;
+            cout << "Вы угадали букву: " << anspeople << endl;
         }
         else { // Неверный ответ
             wronganswers += 1;
-            cout << "Вы не угадали букву или уже использовали её: " << ansPeople << endl;
+            cout << "Вы не угадали букву или уже использовали её: " << anspeople << endl;
             tries = 6 - wronganswers; // Обновление количества оставшихся попыток
             cout << "У вас осталось " << tries << " попыток." << endl;
         }
@@ -163,9 +160,9 @@ public:
 };
 //дружественная функция
 void initializeGame(answers& game, const string& wordFilename) {
-    word selectedWord;
-    selectedWord.selectRandomWord(wordFilename);
-    game.setCurrentWord(selectedWord.getRandomWord()); // Доступ к private методу
+    word selectedword;
+    selectedword.selectRandomWord(wordFilename);
+    game.setCurrentWord(selectedword.getRandomWord()); // Доступ к private методу
 };
 //класс для результата игры
 class gameresult: public answers

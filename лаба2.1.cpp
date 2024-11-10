@@ -16,10 +16,9 @@ int main()
     SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Rus");
     string filename; // Имя файла
-    char userInput;
+    char userinput;
     int i;
     int wr = 0;
-    char* ansPeople(nullptr);
     string input;
     int namberfile=0;
     word w; // Создаем экземпляр класса
@@ -57,22 +56,20 @@ int main()
     int length = word.length();
 
     // Массив для использованных букв и массив для открытых букв
-    char usedLetters[67] = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-    ansPeople = new char[length + 1]; // +1 для '\0'
-    fill(ansPeople, ansPeople + length, '_'); // Заполняем символами '_'
-    ansPeople[length] = '\0'; // Завершаем строку нулем
+    string usedletters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    string anspeople(length, '_'); // Заполняем символами '_'
 
     while (gr.getRightAnswers() < length && gr.getWrongAnswers() < 6)
     {
         int count = 0;
         cout << "Слово из " << length << " букв, введите букву - ";
-        cin >> userInput;
-        gr.setAnswer(userInput);
+        cin >> userinput;
+        gr.setAnswer(userinput);
         // Проверка введенной буквы
-        gr.check(userInput, length, usedLetters, ansPeople);
+        gr.check(userinput, length, usedletters, anspeople);
         for (i = 0; i < length; i++)
         {
-            if (ansPeople[i] != '_')
+            if (anspeople[i] != '_')
             {
                 count += 1;
             }
@@ -93,7 +90,6 @@ int main()
             break;
         }
     }
-    delete[] ansPeople;
 }
 
 
