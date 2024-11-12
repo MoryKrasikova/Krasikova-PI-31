@@ -79,21 +79,21 @@ protected:
     int rightanswers;//кол-во верных
 private:
     int tries; // Количество попыток
-    string currentWord; // Текущее слово
+    string currentword; // Текущее слово
     Letter** letters;
-    int letterCount; // Количество введённых букв
+    int lettercount; // Количество введённых букв
     int capacity; // Вместимость массива
 
     friend void initializeGame(answers& game, const string& wordFilename);
 public:
     // Конструктор
-    answers() : wronganswers(0), rightanswers(0), tries(6), letterCount(0), capacity(22) {
+    answers() : wronganswers(0), rightanswers(0), tries(6), lettercount(0), capacity(22) {
         letters = new Letter * [capacity]; // Выделяем память для массива указателей
     }
 
     // Деструктор для освобождения памяти
     ~answers() {
-        for (int i = 0; i < letterCount; ++i) {
+        for (int i = 0; i < lettercount; ++i) {
             delete letters[i]; // Освобождаем память для каждого объекта Letter
         }
         delete[] letters; // Освобождаем массив указателей
@@ -101,27 +101,27 @@ public:
     // Метод для установки слова
 private:
     void setCurrentWord(const string& word) {
-        currentWord = word;
+        currentword = word;
     }
 
 public:
     void setAnswer(char ans) {
         addLetter(ans); // Записываем букву в массив
     }
-    const string& getCurrentWord() const { return currentWord; }
+    const string& getCurrentWord() const { return currentword; }
 
     void addLetter(char letter)
     {
-        letters[letterCount++] = new Letter(letter); // Создаем новый объект и добавляем в массив
+        letters[lettercount++] = new Letter(letter); // Создаем новый объект и добавляем в массив
     }
     void check(char answer, int wordlength, string& usedletters, string& anspeople) {
         int kol = 0; // Количество совпадений
         int kol1 = 0; // Количество использованных букв
 
         for (int i = 0; i < wordlength; i++) {
-            if (answer == currentWord[i]) { // Сравнение без учета регистра
+            if (answer == currentword[i]) { // Сравнение без учета регистра
                 kol += 1;
-                anspeople[i] = currentWord[i]; // Открываем букву в ansPeople
+                anspeople[i] = currentword[i]; // Открываем букву в ansPeople
             }
         }
         for (int i = 0; i < usedletters.length(); i++) {
@@ -152,11 +152,12 @@ public:
     }
     void displayLetters() const {
         cout << "Введенные буквы: ";
-        for (int i = 0; i < letterCount; ++i) {
+        for (int i = 0; i < lettercount; ++i) {
             cout << letters[i]->getValue() << " "; // Получаем значения букв
         }
         cout << endl;
     }
+   
 };
 //дружественная функция
 void initializeGame(answers& game, const string& wordFilename) {
@@ -199,5 +200,17 @@ public:
 
     void getWinResult(int &winresult) {
         winresult = rightanswers + wronganswers;
+    }
+    //перегрузка 
+    gameresult& operator=(const gameresult& other) {
+        if (this != &other) { // Проверка самоприсваивания
+            this->win = other.win;
+            this->loss = other.loss;
+            this->winresult = other.winresult;  //  В данном случае winresult -  не используется напрямую, но все равно его копируем
+            this->rightanswers = other.rightanswers; // Копируем данные из базового класса answers
+            this->wronganswers = other.wronganswers; // Копируем данные из базового класса answers
+            // ... Копируем другие поля из answers, если они есть ...
+        }
+        return *this;
     }
 };
