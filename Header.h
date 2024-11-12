@@ -172,6 +172,7 @@ private:
     int win;//кол-во выигрышей
     int loss;//кол-во проигрышей
     int winresult;//баллы при выигрыше
+    static int gamesplayed;
 public:
     // Конструктор
     gameresult() : win(0), loss(0), winresult(0){
@@ -213,4 +214,6 @@ public:
         }
         return *this;
     }
+    static int getgamesplayed() { return gamesplayed; }
 };
+int gameresult::gamesplayed = 0;
