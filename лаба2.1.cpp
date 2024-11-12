@@ -9,6 +9,7 @@
 #include <ctime>
 #include <cstring>
 #include <string> 
+#include <limits>
 using namespace std;
 int main()
 {
@@ -29,21 +30,25 @@ int main()
     cout << "2 - страны" << endl;
     cout << "3 - общая тема" << endl;
     cout << "4 - растения" << endl;
-    do
-    {
+    while (namberfile < 1 || namberfile > 4) {
         cin >> input;
-        if (isdigit(input[0]))
-        {
+        try {
             namberfile = stoi(input);
-            if (namberfile < 1 || namberfile>4)
-                cout << "Неверный ввод" << endl;
+            if (namberfile >= 1 && namberfile <= 4) {
+            }
+            else {
+                cout << "Число должно быть от 1 до 4." << endl;
+            }
         }
-        else
-        {
-            cout << "Неверный ввод" << ::endl;
-            namberfile = 0;
+        catch (const invalid_argument& e) {
+            cout << "Неверный ввод. Пожалуйста, введите целое число." << endl;
         }
-    } while (namberfile < 1 || namberfile>4);
+        catch (const out_of_range& e) {
+            cout << "Введенное число находится вне допустимого диапазона." << endl;
+        }
+        // Очистка потока cin от ошибок
+        cin.clear();
+    }
 
     if (namberfile == 1) filename = "animals.txt";
     else if (namberfile == 2) filename = "countries.txt";
