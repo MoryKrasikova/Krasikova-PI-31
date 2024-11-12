@@ -23,12 +23,7 @@ public:
 
     // Метод для выбора случайного слова
     void selectRandomWord(const string& filename) {
-        ifstream file(filename); // Открываем файл
-        if (!file.is_open()) {
-            cerr << "Ошибка открытия файла" << endl;
-            return;
-        }
-
+        ifstream file(filename);
         vector<string> words; // Вектор для хранения слов
         string word;
 
@@ -217,3 +212,21 @@ public:
     static int getgamesplayed() { return gamesplayed; }
 };
 int gameresult::gamesplayed = 0;
+class FileException : public std::runtime_error {
+private:
+    std::string filename_;
+public:
+    FileException(const std::string& message, const std::string& filename) :
+        std::runtime_error(message), filename_(filename) {}
+    const std::string& getFilename() const { return filename_; }
+};
+
+
+// Функция для проверки существования файла вне класса FileException
+void checkFileExists(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        throw FileException("Файл не найден!", filename);
+    }
+}
+

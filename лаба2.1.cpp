@@ -54,7 +54,12 @@ int main()
     else if (namberfile == 2) filename = "countries.txt";
     else if (namberfile == 3) filename = "words.txt";
     else if (namberfile == 4) filename = "plants.txt";
-
+    try {
+        checkFileExists(filename);
+    }
+    catch (const FileException& e) {
+        std::cerr << "Ошибка: " << e.what() << "  Файл: " << e.getFilename() << std::endl;
+    }
 
     initializeGame(gr, filename);
     const string& word = gr.getCurrentWord();
