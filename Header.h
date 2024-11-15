@@ -194,8 +194,8 @@ public:
         return loss;
     }
 
-    void getWinResult(int &winresult) {
-        winresult = rightanswers + wronganswers;
+    void getWinResult(int *winresult) {
+        *winresult = rightanswers + wronganswers;
     }
     //перегрузка 
     gameresult& operator=(const gameresult& other) {

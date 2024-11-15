@@ -86,7 +86,7 @@ int main()
         }
         if (count == length)//при выигрыше, когда в слове не останется не отгаданных букв
         {
-            gr.getWinResult(wr);
+            gr.getWinResult(&wr);
             cout << "Вы отгадали слово - " << word << " за " << wr << " попыток." << endl;
             gr.displayLetters();
             gr.kolwin();
