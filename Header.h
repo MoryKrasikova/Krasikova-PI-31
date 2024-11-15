@@ -205,7 +205,6 @@ public:
             this->winresult = other.winresult;  //  В данном случае winresult -  не используется напрямую, но все равно его копируем
             this->rightanswers = other.rightanswers; // Копируем данные из базового класса answers
             this->wronganswers = other.wronganswers; // Копируем данные из базового класса answers
-            // ... Копируем другие поля из answers, если они есть ...
         }
         return *this;
     }
