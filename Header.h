@@ -152,6 +152,16 @@ public:
         }
         cout << endl;
     }
+    virtual void displayStats() const {
+        cout << "Статистика ответов:\n";
+        cout << "Верные ответы: " << rightanswers << "\n";
+        cout << "Неверные ответы: " << wronganswers << endl;
+    }
+    virtual void displayStats1() const {
+        cout << "Статистика ответов:\n";
+        cout << "Верные ответы: " << rightanswers << "\n";
+        cout << "Неверные ответы: " << wronganswers << endl;
+    }
    
 };
 //дружественная функция
@@ -167,10 +177,11 @@ private:
     int win;//кол-во выигрышей
     int loss;//кол-во проигрышей
     int winresult;//баллы при выигрыше
+    int kol;
     static int gamesplayed;
 public:
     // Конструктор
-    gameresult() : win(0), loss(0), winresult(0){
+    gameresult() : win(0), loss(0), winresult(0), kol(0){
 
     }
 
@@ -190,19 +201,36 @@ public:
     {
         loss += 1;
     }
-    int getLoss() const {
-        return loss;
+    void getLoss(int *loss) {
+        *loss = this->loss;
+        kol = rightanswers + wronganswers;
     }
 
     void getWinResult(int *winresult) {
         *winresult = rightanswers + wronganswers;
+        this->winresult = *winresult;
+        kol = this->winresult;
+    }
+    void displayStats() const override {
+        // Вызов метода базового класса
+        answers::displayStats();
+        cout << "Статистика игр:\n";
+        cout << "Выигрыши: " << win << "\n";
+        cout << "Проигрыши: " << loss << "\n";
+        cout << "Попытки: " << kol << endl;
+    }
+    void displayStats1() const override {
+        // Не вызываем метод базового класса
+        cout << "Статистика игр:\n";
+        cout << "Выигрыши: " << win << "\n";
+        cout << "Проигрыши: " << loss << "\n";
+        cout << "Попытки: " << kol << endl; // Выводим количество
     }
     //перегрузка 
     gameresult& operator=(const gameresult& other) {
         if (this != &other) { // Проверка самоприсваивания
             this->win = other.win;
             this->loss = other.loss;
-            this->winresult = other.winresult;  //  В данном случае winresult -  не используется напрямую, но все равно его копируем
             this->rightanswers = other.rightanswers; // Копируем данные из базового класса answers
             this->wronganswers = other.wronganswers; // Копируем данные из базового класса answers
         }

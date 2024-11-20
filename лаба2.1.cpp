@@ -20,6 +20,7 @@ int main()
     char userinput;
     int i;
     int wr = 0;
+    int loss = 0;
     string input;
     int namberfile=0;
     word w; // Создаем экземпляр класса
@@ -94,12 +95,14 @@ int main()
         }
         if (gr.getWrongAnswers() == 6)//при проигыше, когда закончатся 6 попыток
         {
+            gr.getLoss(&loss);
             cout << "Вы проиграли! Слово - " << word << endl;
             gr.displayLetters();
             gr.kolloss();
             break;
         }
     }
+    gr.displayStats();
 }
 
 
