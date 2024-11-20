@@ -25,7 +25,6 @@ int main()
     int namberfile=0;
     word w; // Создаем экземпляр класса
     gameresult gr;
-    answers answer;
     cout << "Выберите категорию слов:" << endl;
     cout << "1 - животные" << endl;
     cout << "2 - страны" << endl;

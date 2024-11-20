@@ -82,7 +82,7 @@ private:
     friend void initializeGame(answers& game, const string& wordFilename);
 public:
     // Конструктор
-    answers() : wronganswers(0), rightanswers(0), tries(6), lettercount(0), capacity(22) {
+    answers(int w, int r, int t, int l, int c) : wronganswers(w), rightanswers(r), tries(t), lettercount(l), capacity(c) {
         letters = new Letter * [capacity]; // Выделяем память для массива указателей
     }
 
@@ -181,7 +181,7 @@ private:
     static int gamesplayed;
 public:
     // Конструктор
-    gameresult() : win(0), loss(0), winresult(0), kol(0){
+    gameresult() : answers(0, 0, 6, 0, 22), win(0), loss(0), winresult(0), kol(0){
 
     }
 
