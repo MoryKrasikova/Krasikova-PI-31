@@ -162,6 +162,14 @@ public:
         cout << "Верные ответы: " << rightanswers << "\n";
         cout << "Неверные ответы: " << wronganswers << endl;
     }
+    answers& operator=(const answers& other) {
+        if (this != &other) { // Проверка на самоприсваивание
+            wronganswers = other.wronganswers;
+            rightanswers = other.rightanswers;
+            tries = other.tries;
+        }
+        return *this;
+    }
    
 };
 //дружественная функция
@@ -229,6 +237,7 @@ public:
     //перегрузка 
     gameresult& operator=(const gameresult& other) {
         if (this != &other) { // Проверка самоприсваивания
+            answers::operator = (other);
             this->win = other.win;
             this->loss = other.loss;
             this->rightanswers = other.rightanswers; // Копируем данные из базового класса answers
