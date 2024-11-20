@@ -152,6 +152,10 @@ public:
         }
         cout << endl;
     }
+    // Не виртуальный метод, который вызывает виртуальный метод
+    void showStats() const {
+        displayStats();
+    }
     virtual void displayStats() const {
         cout << "Статистика ответов:\n";
         cout << "Верные ответы: " << rightanswers << "\n";
