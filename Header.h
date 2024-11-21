@@ -161,11 +161,7 @@ public:
         cout << "Верные ответы: " << rightanswers << "\n";
         cout << "Неверные ответы: " << wronganswers << endl;
     }
-    virtual void displayStats1() const {
-        cout << "Статистика ответов:\n";
-        cout << "Верные ответы: " << rightanswers << "\n";
-        cout << "Неверные ответы: " << wronganswers << endl;
-    }
+    virtual void displayStats1() const = 0;
     answers& operator=(const answers& other) {
         if (this != &other) { // Проверка на самоприсваивание
             wronganswers = other.wronganswers;
@@ -233,6 +229,9 @@ public:
     }
     void displayStats1() const override {
         // Не вызываем метод базового класса
+        cout << "Статистика ответов:\n";
+        cout << "Верные ответы: " << rightanswers << "\n";
+        cout << "Неверные ответы: " << wronganswers << "\n";
         cout << "Статистика игр:\n";
         cout << "Выигрыши: " << win << "\n";
         cout << "Проигрыши: " << loss << "\n";
