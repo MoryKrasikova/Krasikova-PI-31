@@ -101,7 +101,9 @@ int main()
             break;
         }
     }
-    gr.displayStats();
+    gr.showStats();
+    gameresult* game = new gameresult;
+    game->displayStats1();
 }
 
 
