@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstring>
+#include <tuple>
+
 using namespace std;
 //класс для слова от компьютера
 class word {
@@ -72,8 +74,8 @@ class answers
 protected:
     int wronganswers;//кол-во неерных ответов
     int rightanswers;//кол-во верных
+    int tries;// Количество попыток
 private:
-    int tries; // Количество попыток
     string currentword; // Текущее слово
     Letter** letters;
     int lettercount; // Количество введённых букв
@@ -137,12 +139,12 @@ public:
             cout << "У вас осталось " << tries << " попыток." << endl;
         }
     }
-    int getRightAnswers() {
+    int const getRightAnswers() {
         return rightanswers;
     }
 
     // Метод для получения количества неверных ответов
-    int getWrongAnswers() {
+    int const getWrongAnswers() {
         return wronganswers;
     }
     void displayLetters() const {
@@ -196,6 +198,12 @@ public:
     // Деструктор для освобождения памяти
     ~gameresult() {
     }
+    //контейнер
+    std::vector<std::tuple<int, int, int, int, int, int>> stats;
+    void addStats() {
+        stats.emplace_back(wronganswers, rightanswers, tries, win, loss, winresult);
+    }
+
     void kolwin()
     {
        win += 1;

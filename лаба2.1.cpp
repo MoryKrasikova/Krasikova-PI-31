@@ -101,7 +101,9 @@ int main()
             break;
         }
     }
-    gr.showStats();
+    gr.addStats(); 
+    gr.displayStats1();
+
 }
 
 
