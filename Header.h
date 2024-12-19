@@ -7,7 +7,8 @@
 #include <ctime>
 #include <cstring>
 #include <tuple>
-
+#include <algorithm>
+#include <sstream>
 using namespace std;
 //класс для слова от компьютера
 class word {
@@ -199,9 +200,11 @@ public:
     ~gameresult() {
     }
     //контейнер
-    std::vector<std::tuple<int, int, int, int, int, int>> stats;
+    vector<int> stats ;
     void addStats() {
-        stats.emplace_back(wronganswers, rightanswers, tries, win, loss, winresult);
+        stats = { wronganswers, rightanswers, kol, win, loss, winresult };
+        sort(stats.begin(), stats.end());
+
     }
 
     void kolwin()
