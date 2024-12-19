@@ -201,10 +201,26 @@ public:
     }
     //контейнер
     vector<int> stats ;
+    //метод для заполнения и сортировки
     void addStats() {
         stats = { wronganswers, rightanswers, kol, win, loss, winresult };
         sort(stats.begin(), stats.end());
 
+    }
+    //метод для вывода
+    void printStats() const {
+        for (size_t i = 0; i < stats.size(); ++i) {
+            cout << stats[i];
+            if (i < stats.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << endl;
+    }
+    //метод для поиска
+    bool findStat(int value) const {
+        auto it = find(stats.begin(), stats.end(), value);
+        return it != stats.end(); // Возвращаем true, если значение найдено
     }
 
     void kolwin()

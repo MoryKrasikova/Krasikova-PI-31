@@ -101,7 +101,18 @@ int main()
             break;
         }
     }
-
+    cout << "Контейнер:" << endl;
+    gr.addStats();
+    gr.printStats();
+    int value;
+    cout << "Введите цисло: ";
+    cin >> value;
+    if (gr.findStat(value)) {
+        std::cout << "Значение " << value << " найдено в контейнере." << std::endl;
+    }
+    else {
+        std::cout << "Значение " << value << " не найдено в контейнере." << std::endl;
+    }
     gr.displayStats1();
 
 }
